@@ -10,21 +10,7 @@
   <script type="text/babel">
     // react js 는 자바스크립트로 먼저 element를 만들고 react js가 코드를 해석해서 html에 내림
     const root = document.getElementById('root');
-    function Title() {
-      return (
-        <h3 id='title' onMouseEnter={() => console.log('ten')}>
-          hi
-        </h3>
-      );
-    }
-    const Btn = () => (
-      <button
-        style={{ backgroundColor: 'tomato' }}
-        onClick={() => (title.text = 3)}
-      >
-        click me
-      </button>
-    );
+    let counter = 0;
 
     // const h3 = React.createElement('h3', { id: 'title' }, 'hi');
     // const btn = React.createElement(
@@ -40,11 +26,20 @@
     // const container = React.createElement('div', null, [title, btn]);
 
     /*내가 만든 요소는 대문자로 시작. html요소는 소문자로 ex) <button>*/
-    const Container = (
-      <div>
-        <Title /> <Btn />
-      </div>
-    );
-    ReactDOM.render(Container, root);
+    function App() {
+      const [counter, setCounter] = React.useState(0);
+      const onClick = () => {
+        // setCounter(counter + 1);
+        setCounter((current) => current + 1);
+      };
+
+      return (
+        <div>
+          <h3>Total clicks: {counter}</h3>
+          <button onClick={onClick}>click me</button>
+        </div>
+      );
+    }
+    ReactDOM.render(<App />, root);
   </script>
 </html>
