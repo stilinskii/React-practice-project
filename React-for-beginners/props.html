@@ -10,9 +10,11 @@
   <script type="text/babel">
     // react js 는 자바스크립트로 먼저 element를 만들고 react js가 코드를 해석해서 html에 내림
     // props는 부모컴포넌트에서 자식컴포넌트한테 데이터 넘기는 것?
-    function Btn(props) {
+    function Btn({ text, onClick }) {
+      console.log(text, 'was rendered');
       return (
         <button
+          onClick={onClick}
           style={{
             backgroundColor: 'tomato',
             color: 'white',
@@ -21,16 +23,33 @@
             borderRadius: 10,
           }}
         >
-          {props.text}
+          {text}
         </button>
       );
     }
 
+    // memo : prop이 바뀌지 않는다면 rerender안하게 할 수 있음.
+    const MemorizedBtn = React.memo(Btn);
+
+    //custom component에 onClick은 이벤트리스너가 아니라 prop이다.
     function App() {
+      //setValue 값이 안바뀌면 useState가 알아서 rerender를 안하네
+      const [value, setValue] = React.useState('Save Changes');
+      const [clicked, setClicked] = React.useState(false);
+      const changeClicked = () => {
+        //아니... 여기서 clicked의 값을 true로 바꿔줘야하는데 왜 2번 눌러야 true로 바뀌는거임 이해가안되네
+        console.log(clicked);
+        setClicked(!clicked);
+      };
+      const onClick = () => {
+        changeClicked();
+        console.log(clicked);
+        setValue(clicked ? 'Revert Changes' : 'Save Changes');
+      };
       return (
         <div>
-          <Btn text='hi' />
-          <Btn text='bye' />
+          <MemorizedBtn text={value} onClick={onClick} />
+          <MemorizedBtn text='bye' big={false} />
         </div>
       );
     }
